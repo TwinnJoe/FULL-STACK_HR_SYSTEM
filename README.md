@@ -1,8 +1,12 @@
 # HR Management System
 
+![Tech](https://img.shields.io/badge/tech-stack-full--stack-green)  
+![Backend](https://img.shields.io/badge/backend-Node.js-blue)  
+![Database](https://img.shields.io/badge/database-MySQL-orange)  
+![License](https://img.shields.io/badge/license-MIT-blue)  
 [![Live Demo](https://img.shields.io/badge/demo-online-orange)](https://your-demo-link.com)
 
-A simple, front-end-focused HR system designed to showcase essential features such as employee management, payroll automation, and attendance tracking. This project includes a basic mock authentication system and demonstrates the potential for future full-stack development.
+A full-stack HR system built with Node.js, MySQL, and RESTful APIs. It supports full CRUD operations and secure user authentication via the backend. The system is designed to manage employees, automate payroll, and provide an efficient admin dashboard.
 
 ---
 
@@ -14,36 +18,65 @@ A simple, front-end-focused HR system designed to showcase essential features su
 
 ## 🚀 Features
 
-### ✅ Centralized Employee Data Management
-- Store and manage employee details, including personal info, salary, and employment history.
+### ✅ Full-Stack Architecture
+- Node.js backend with RESTful API
+- Frontend (Vue 3) integrated with backend services
 
-### 💰 Payroll Automation
-- Automatically calculate payroll and generate downloadable digital payslips (PDF).
+### 👥 Employee Management
+- Create, Read, Update, and Delete employee records
 
-### 📆 Attendance Management
-- Handle employee attendance.
+### 💰 Payroll Generation
+- Calculates salaries and exports digital payslips as PDFs
 
-### 📊 Data Visualization
-- Visual reports and charts for attendance and HR statistics.
+### 🔐 Authentication System
+- Secure login powered by backend using JWT and bcrypt
+- Admin and employee login roles
 
-### 🔐 Mock Authentication
-- A basic login system using hardcoded credentials for demonstration purposes.
-
-### 🖥️ User-Friendly Interface
-- Clean and responsive UI suitable for desktop, tablet, and mobile use.
+### 🖥️ Clean UI
+- Responsive frontend interface built for usability
 
 ---
 
-## 🛠️ Installation
+## 🛠️ Tech Stack
 
-Before running the project, make sure you have the required packages installed:
+- **Frontend**: Vue 3  
+- **Backend**: Node.js, Express.js  
+- **Database**: MySQL  
+- **Authentication**: JWT + bcrypt  
+- **PDF Generation**: jsPDF + jsPDF-AutoTable
+
+---
+
+## 🗂️ Project Structure
 
 ```bash
-npm install jspdf
-npm install jspdf-autotable
+HR-System/
+├── backend/
+│   ├── config/        # DB config
+│   ├── controllers/   # Business logic
+│   ├── models/        # Database models
+│   ├── routes/        # API routes
+│   └── server.js      # Entry point
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── views/
+│   │   └── store/     # Vuex state
+│   └── main.js
+└── README.md
 
 
-🔑 Login Credentials
+🔌 API Endpoints Overview
+Method	Endpoint	Description
+GET	/api/employees	Get all employees
+GET	/api/employees/:id	Get employee by ID
+POST	/api/employees	Create new employee
+PUT	/api/employees/:id	Update employee data
+DELETE	/api/employees/:id	Delete employee
+POST	/api/login	User login (Admin/Emp)
+
+
+🔑 Login Credentials (Demo)
 👑 Admin
 Username: Admin
 
@@ -55,11 +88,10 @@ Username: Emp010
 Password: Work@25
 
 📌 Notes
-This project is a front-end demonstration with mock data.
+Backend handles all login and authentication logic
 
-Future plans include backend integration, dynamic authentication, and real-time data syncing.
+Uses MySQL for secure data storage
 
+Visual charts and leave request modules were removed in this version
 
-
-
-
+Future updates may include role-based permissions and profile editing
