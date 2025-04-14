@@ -1,9 +1,7 @@
 # HR Management System
-
-![Tech](https://img.shields.io/badge/tech-stack-full--stack-green)  
+ 
 ![Backend](https://img.shields.io/badge/backend-Node.js-blue)  
 ![Database](https://img.shields.io/badge/database-MySQL-orange)  
-![License](https://img.shields.io/badge/license-MIT-blue)  
 [![Live Demo](https://img.shields.io/badge/demo-online-orange)](https://your-demo-link.com)
 
 A full-stack HR system built with Node.js, MySQL, and RESTful APIs. It supports full CRUD operations and secure user authentication via the backend. The system is designed to manage employees, automate payroll, and provide an efficient admin dashboard.
