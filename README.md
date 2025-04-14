@@ -78,14 +78,14 @@ POST	/api/login	User login (Admin/Emp)
 
 🔑 Login Credentials (Demo)
 👑 Admin
-Username: Admin
+Username: Sibongile Nkosi
 
-Password: Adm1n@23
+Password: Admin001
 
 👷 Employee
-Username: Emp010
+Username: Fatima Patel
 
-Password: Work@25
+Password: Emp002
 
 📌 Notes
 Backend handles all login and authentication logic
