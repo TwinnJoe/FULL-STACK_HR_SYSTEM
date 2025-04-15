@@ -71,25 +71,20 @@ GET	/api/employees/:id	Get employee by ID
 POST	/api/employees	Create new employee
 PUT	/api/employees/:id	Update employee data
 DELETE	/api/employees/:id	Delete employee
-POST	/api/login	User login (Admin/Emp)
+POST	/api/login (Admin)
 
 
 🔑 Login Credentials (Demo)
 👑 Admin
-Username: Sibongile Nkosi
+Username: Sibongilenkosi
 
 Password: Admin001
-
-👷 Employee
-Username: Fatima Patel
-
-Password: Emp002
 
 📌 Notes
 Backend handles all login and authentication logic
 
 Uses MySQL for secure data storage
 
-Visual charts and leave request modules were removed in this version
+Visual charts, Employee Login and leave request modules were removed in this version
 
 Future updates may include role-based permissions and profile editing
