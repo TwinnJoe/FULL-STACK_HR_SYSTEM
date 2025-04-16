@@ -2,8 +2,7 @@
 import bcrypt from 'bcryptjs';
 
 const users = [
-  { employeeID: 1001, name: 'Sibongile Nkosi', password: 'Admin001' },
-  { employeeID: 1010, name: 'Fatima Patel', password: 'Emp002' },
+  { employeeID: 1001, name: 'Sibongilenkosi', password: 'Admin001' },
 ];
 
 const hashPasswords = async () => {

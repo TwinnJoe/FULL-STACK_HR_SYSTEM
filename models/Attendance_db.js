@@ -18,11 +18,11 @@ const Attendance = async (employeeID) => {
 };
 
 // Add a new attendance record
-const addAttendance = async (employeeID, date, attendance_Status) => {
+const addAttendance = async (employeeID, date, status) => {
     // Use VALUES instead of SET in the INSERT statement
     await pool.query(
-        'INSERT INTO attendance (employeeID, date, attendance_Status) VALUES (?,?,?)',
-        [employeeID, date, attendance_Status]
+        'INSERT INTO attendance (employeeID, date, status) VALUES (?,?,?)',
+        [employeeID, date, status]
     );
 };
 
