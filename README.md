@@ -1,5 +1,5 @@
 # HR Management System
- 
+
 ![Backend](https://img.shields.io/badge/backend-Node.js-blue)  
 ![Database](https://img.shields.io/badge/database-MySQL-orange)  
 [![Live Demo](https://img.shields.io/badge/demo-online-orange)](https://your-demo-link.com)
@@ -17,30 +17,35 @@ A full-stack HR system built with Node.js, MySQL, and RESTful APIs. It supports 
 ## 🚀 Features
 
 ### ✅ Full-Stack Architecture
+
 - Node.js backend with RESTful API
 - Frontend (Vue 3) integrated with backend services
 
 ### 👥 Employee Management
+
 - Create, Read, Update, and Delete employee records
 
 ### 💰 Payroll Generation
+
 - Calculates salaries and exports digital payslips as PDFs
 
 ### 🔐 Authentication System
+
 - Secure login powered by backend using JWT and bcrypt
 - Admin and employee login roles
 
 ### 🖥️ Clean UI
+
 - Responsive frontend interface built for usability
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Vue 3  
-- **Backend**: Node.js, Express.js  
-- **Database**: MySQL  
-- **Authentication**: JWT + bcrypt  
+- **Frontend**: Vue 3
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL
+- **Authentication**: JWT + bcrypt
 - **PDF Generation**: jsPDF + jsPDF-AutoTable
 
 ---
@@ -88,3 +93,4 @@ Uses MySQL for secure data storage
 Visual charts, Employee Login and leave request modules were removed in this version
 
 Future updates may include role-based permissions and profile editing
+```

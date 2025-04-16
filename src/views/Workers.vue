@@ -10,10 +10,9 @@
         <thead>
           <tr>
             <th>Payroll</th>
-            <th>ID</th>
+            <th>Employee</th>
             <th>Hours Worked</th>
             <th>Leave Days</th>
-            <th>UIF (%)</th>
             <th>Salary</th>
             <th>Performance</th>
             <th>Actions</th>
@@ -21,11 +20,10 @@
         </thead>
         <tbody>
           <tr v-for="employee in filteredPayroll" :key="employee.employeeID">
-            <td>{{ employee.payroll_ID }}</td>
+            <td>{{ employee.payrollID }}</td>
             <td>{{ employee.employeeID }}</td>
             <td>{{ employee.hours_worked }}</td>
             <td>{{ employee.leave_days }}</td>
-            <td>{{ (employee.UIF * 100).toFixed(0) }}%</td>
             <td>R {{ employee.salary }}</td>
             <td>{{ employee.performance }}</td>
             <td>
@@ -44,7 +42,8 @@
         <h5 class="modal-title">Manage Payroll</h5>
         <form @submit.prevent="handleSubmit">
           <div class="input-group" v-for="(value, key) in dataList" :key="key">
-            <input v-model="dataList[key]" :placeholder="key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())" required />
+            <input v-model="dataList[key]" :placeholder="key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())"
+              required />
           </div>
         </form>
         <div class="modal-footer">
@@ -54,7 +53,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Payslip Modal -->
     <div class="PayslipModal" v-show="selectedEmployee" @click.self="selectedEmployee = false">
 
@@ -71,8 +70,8 @@
           <div class="payslip-body">
             <div class="payslip-section">
               <h3>Employee Information</h3>
-              <p><strong>Employee:</strong> {{ getEmployeeName(selectedEmployee.employeeID) }}</p>
-              <p><strong>Position:</strong> {{ getEmployeePosition(selectedEmployee.employeeID) }}</p>
+              <p><strong>Employee:</strong> {{ selectedEmployee.employeeID }}</p>
+              <p><strong>Payroll:</strong> {{ selectedEmployee.payrollID }}</p>
             </div>
 
             <div class="payslip-section">
@@ -84,17 +83,12 @@
 
             <div class="payslip-section">
               <h3>Net Pay</h3>
-              <p class="net-salary"><strong>{{ salaryAfterDeductions(selectedEmployee) }}</strong>
+              <p class="net-salary"><strong>R {{ salaryAfterDeductions(selectedEmployee).toLocaleString('en-ZA', {
+                minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</strong>
               </p>
             </div>
           </div>
-
-          <div class="payslip-footer">
-            <p>Authorized By: Sinovuyo</p>
-            <p>Thank you for your hard work!</p>
-          </div>
         </div>
-
         <div class="modal-footer">
           <button class="btn btn-success" @click="downloadPayslip(selectedEmployee)">Download</button>
           <button class="btn btn-secondary" @click="selectedEmployee = false">Close</button>
@@ -148,11 +142,11 @@ export default {
       const selectedEmployee = this.employees.find(emp => emp.employeeID === this.dataList.employeeID);
       this.dataList.salary = selectedEmployee ? selectedEmployee.salary : 0;
 
-    this.$store.dispatch('addPayroll', this.dataList).then(() => {
-    this.fetchData();         
-    this.resetForm();
-    this.closeModal();       
-  }).catch(err => console.error("Error adding payroll:", err));
+      this.$store.dispatch('addPayroll', this.dataList).then(() => {
+        this.fetchData();
+        this.resetForm();
+        this.closeModal();
+      }).catch(err => console.error("Error adding payroll:", err));
     },
     updatePayrollData(payload) {
       this.dataList = { ...payload };
@@ -176,19 +170,11 @@ export default {
         });
       }
     },
-    getEmployeeName(employeeID) {
-      const employee = this.employees.find(employee => employee.employeeID === employeeID);
-      return employee ? employee.name : '';
-    },
-    getEmployeePosition(employeeID) {
-      const employee = this.employees.find(employee => employee.employeeID === employeeID);
-      return employee ? employee.position : '';
-    },
     resetForm() {
       this.dataList = {
         employeeID: "",
         hours_worked: "",
-        UIF: "", // Changed from leave_deductions to UIF
+        leave_days: "",
         salary: "",
         performance: "",
       };
@@ -232,24 +218,12 @@ export default {
     },
     salaryAfterDeductions(employee) {
       const monthlySalary = employee.salary || this.calculateMonthlySalary(employee.hours_worked);
-      
-      // Calculate UIF
       const uifContribution = this.calculateUIF(employee);
-      
-      // Ensure taxable amount is not negative
       const taxableAmount = monthlySalary - uifContribution;
-      const taxRate = 0.15; // 15% tax
-      const tax = Math.max(0, taxableAmount * taxRate); // Ensure tax is not negative
-
+      const tax = Math.max(0, taxableAmount * 0.15); // Ensure tax is not negative
       const netSalary = taxableAmount - tax;
-
-      // Format as ZAR currency
-      return new Intl.NumberFormat('en-ZA', {
-        style: 'currency',
-        currency: 'ZAR'
-      }).format(netSalary);
+      return netSalary;
     },
-
     showPayslip(employee) {
       this.selectedEmployee = employee;
     },
@@ -259,39 +233,46 @@ export default {
       // Add Company Name and Payslip Title
       doc.setFont("helvetica", "bold");
       doc.setFontSize(16);
-      doc.text("Company Name", 105, 15, { align: "center" });
+      doc.text("HR Tech", 105, 15, { align: "center" });
       doc.setFontSize(14);
       doc.text("Employee Payslip", 105, 25, { align: "center" });
 
       // Employee Details Section
       doc.setFont("helvetica", "normal");
       doc.setFontSize(12);
-      doc.text(`Employee Name: ${employee.name}`, 15, 40);
-      doc.text(`Employee ID: ${employee.employeeID}`, 15, 50);
-      doc.text(`Position: ${this.getEmployeePosition(employee.employeeID)}`, 15, 60);
+      doc.text(`Employee: ${employee.employeeID}`, 15, 50);
+      doc.text(`Payroll: ${employee.payrollID}`, 15, 60);
       doc.text(`Date: ${new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: '2-digit' })}`, 150, 40);
+
+      // Calculate values using the provided functions
+      const hoursWorked = employee.hours_worked;
+      const monthlySalary = Number(employee.salary) || this.calculateMonthlySalary(hoursWorked);
+      const uifContribution = this.calculateUIF(employee);
+      const taxableAmount = monthlySalary - uifContribution;
+      const tax = Math.max(0, taxableAmount * 0.15); // Ensure tax is not negative
+      const netSalary = this.salaryAfterDeductions(employee);
 
       // Earnings and Deductions Table
       doc.autoTable({
         startY: 70,
         head: [['Description', 'Amount (ZAR)']],
         body: [
-          ['Hours Worked', employee.hours_worked],
-          ['Monthly Salary', `R ${this.calculateMonthlySalary(employee.hours_worked).toFixed(2)}`],
-          ['UIF Contribution', `R ${this.calculateUIF(employee).toFixed(2)}`], // Changed from leave_deductions to UIF
-          ['Tax (15%)', `R ${(this.salaryAfterDeductions(employee) * 0.15).toFixed(2)}`], // Tax Deduction
-          ['Net Salary', `R ${this.salaryAfterDeductions(employee)}`]
+          ['Hours Worked', hoursWorked],
+          ['Monthly Salary', `R ${monthlySalary.toFixed(2)}`],
+          ['UIF Contribution', `R ${uifContribution.toFixed(2)}`],
+          ['Tax (15%)', `R ${tax.toFixed(2)}`],
+          ['Net Salary', `R ${netSalary.toFixed(2)}`]
         ],
-        theme: 'grid', // Adds a table border
-        styles: { fontSize: 11 },
-        headStyles: { fillColor: [41, 128, 185], textColor: 255 }, // Blue header
-        columnStyles: { 1: { halign: 'right' } }, // Align right for Amounts
+        theme: 'grid',
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+        columnStyles: { 1: { halign: 'right' } },
       });
 
       // Footer
       doc.setFontSize(10);
       doc.text("This is a system-generated payslip and does not require a signature.", 15, doc.internal.pageSize.height - 20);
-      doc.text("Company Name | www.companywebsite.com", 15, doc.internal.pageSize.height - 10);
+      doc.text("HR Tech | www.hrtech.com", 15, doc.internal.pageSize.height - 10);
 
       // Save PDF
       doc.save(`${employee.name}_payslip.pdf`);
@@ -316,6 +297,7 @@ h1 {
 
 .table-container {
   margin-top: 20px;
+  height: 100%;
   overflow-x: auto;
 }
 
@@ -715,6 +697,36 @@ h1 {
   .employee-table th,
   .employee-table td {
     padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .payslip {
+    width: 90%;
+    height: auto;
+    max-height: 90vh;
+    padding: 15px;
+  }
+
+  .payslip-body {
+    overflow-y: auto;
+    max-height: 60vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .payslip {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .payslip-section h3 {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 8px 10px;
   }
 }
 </style>

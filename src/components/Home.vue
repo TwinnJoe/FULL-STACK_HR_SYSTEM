@@ -4,8 +4,8 @@
     <main>
       <header>
         <div class="user-profile">
-          <img src="https://ca.slack-edge.com/T02LW4RMXJQ-U07Q3KG4K0D-710193470838-512" alt="Profile" />
-          <span>Sibongile Nkosi (Administrator)</span>
+          <img :src="user && user.profileImage ? user.profileImage : 'https://via.placeholder.com/150'" alt="Profile" />
+          <span>{{ user?.name || 'Sibongile Nkosi' }} (Administrator)</span>
         </div>
       </header>
 
@@ -64,7 +64,6 @@
                     class="fas fa-pencil"></i>
                   <i @click="deleteEmployee(employee.employeeID)" style="color:red; cursor: pointer;"
                     class="fas fa-trash"></i>
-
                 </td>
               </tr>
             </tbody>
@@ -107,7 +106,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['AllEmployees','addEmployee','updateEmployee','deleteEmployee']),
+    ...mapActions(['AllEmployees', 'addEmployee', 'updateEmployee', 'deleteEmployee']),
 
     handleSubmit() {
       if (this.isEditing) {
@@ -172,8 +171,11 @@ export default {
 <style scoped>
 #dashboard {
   display: flex;
+  flex-direction: column;
+  /* Stack elements vertically */
   background-color: #d3d3d3;
   transition: all 0.3s ease;
+  height: 100%;
 }
 
 .employee-form {
@@ -272,7 +274,6 @@ header {
   margin-right: 10px;
   width: 50px;
   height: 50px;
-  align-items: center;
 }
 
 .notification {
@@ -314,27 +315,80 @@ header {
   margin-bottom: 20px;
 }
 
-.chart {
-  background: #f9f9f9;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed #ccc;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
 .search-bar input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
   width: 200px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  #dashboard {
+    flex-direction: column;
+    /* Stack elements vertically */
+  }
+
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+    /* Two cards per row on tablets */
+  }
+
+  .search-bar input {
+    width: 100%;
+    /* Full width for search bar on smaller screens */
+  }
+
+  .employee-form {
+    padding: 1rem;
+    /* Reduce padding for smaller screens */
+  }
+
+  .employee-form button {
+    padding: 0.5rem;
+    /* Smaller button padding */
+  }
+
+  header {
+    flex-direction: column;
+    /* Stack header items on smaller screens */
+    align-items: flex-start;
+    /* Align items to the start */
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+    /* One card per row on mobile */
+  }
+
+  .employee-form input {
+    padding: 0.5rem;
+    /* Maintain input padding */
+  }
+
+  .employee-form {
+    margin-top: 1rem;
+    /* Reduce margin for mobile */
+  }
+
+  .user-profile img {
+    width: 40px;
+    /* Smaller profile image */
+    height: 40px;
+    /* Smaller profile image */
+  }
+
+  .notification {
+    font-size: 18px;
+    /* Smaller notification icon */
+  }
+
+  main {
+    padding: 10px;
+    /* Reduce padding for mobile */
+  }
 }
 </style>

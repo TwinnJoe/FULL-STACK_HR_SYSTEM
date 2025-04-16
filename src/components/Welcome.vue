@@ -5,8 +5,6 @@
       <p class="description">Streamline HR processes</p>
       <div class="button-group">
         <button class="btn btn-admin" @click="switchToAdmin">Administrator</button>
-
-        <button class="btn btn-employee" @click="switchToEmployee">Employee</button>
       </div>
       <p class="footer">© 2024 HR Management System. All rights reserved.</p>
     </div>
@@ -20,15 +18,10 @@ export default {
     switchToAdmin() {
       // Navigate to the admin login route
       this.$router.push({ path: "/Admin" });
-    },
-    switchToEmployee() {
-      // Navigate to the employee login route
-      this.$router.push({ path: "/Employee" });
-    },
+    }
   },
 };
 </script>
-
 <style scoped>
 .app-container {
   display: flex;
@@ -96,5 +89,64 @@ export default {
   height: 100px;
   border-radius: 50%;
   align-items: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .card {
+    padding: 1.5rem;
+    /* Reduce padding for smaller screens */
+  }
+
+  .title {
+    font-size: 1.25rem;
+    /* Smaller title font size */
+  }
+
+  .description {
+    font-size: 0.9rem;
+    /* Smaller description font size */
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    /* Smaller button font size */
+  }
+
+  .button-group {
+    flex-direction: column;
+    /* Stack buttons vertically */
+    gap: 0.5rem;
+    /* Maintain gap between buttons */
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+    /* Further reduce padding for mobile */
+  }
+
+  .title {
+    font-size: 1.1rem;
+    /* Even smaller title font size */
+  }
+
+  .description {
+    font-size: 0.85rem;
+    /* Even smaller description font size */
+  }
+
+  .btn {
+    padding: 0.4rem 0.8rem;
+    /* Smaller button padding */
+  }
+
+  .Wel-logo {
+    width: 80px;
+    /* Smaller logo size for mobile */
+    height: 80px;
+    /* Smaller logo size for mobile */
+  }
 }
 </style>

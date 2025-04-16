@@ -4,25 +4,18 @@
       <aside class="sidebar">
         <div class="sidebar-header">
           <span>
-            <div class="brand" v-if="!isSidebarCollapsed">HR System</div>
+            <div class="brand" v-if="!isSidebarCollapsed">HR Tech</div>
           </span>
           <button class="toggle-btn" @click="toggleSidebar">
-            <box-icon
-              :name="isSidebarCollapsed ? 'menu' : 'x'"
-              :rotate="isSidebarCollapsed ? '0' : '90'" color="white"
-            >
-            </box-icon>
+            <box-icon :name="isSidebarCollapsed ? 'menu' : 'x'" :rotate="isSidebarCollapsed ? '0' : '90'"
+              color="white" />
           </button>
         </div>
         <ul>
           <li v-for="menu in menus" :key="menu.name" :class="{ active: isActive(menu.route) }">
-            <box-icon :name="menu.icon"  color="white" class="icon"></box-icon>
-            <router-link
-              v-if="!isSidebarCollapsed"
-              :to="menu.route"
-              class="nav-link"
-            >
-              {{ menu.name }}
+            <router-link :to="menu.route" class="nav-link full-link">
+              <box-icon :name="menu.icon" color="white" class="icon" />
+              <span v-if="!isSidebarCollapsed">{{ menu.name }}</span>
             </router-link>
           </li>
         </ul>
@@ -62,15 +55,14 @@ export default {
 /* Layout */
 .layout-with-sidebar {
   display: flex;
-  height: 100vh;
-  background-color: #f4f4f9;
+  background-color: #d3d3d3;
 }
 
 .content {
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
-  background-color: #fff;
+  background-color: #d3d3d3;
 }
 
 /* Sidebar */
@@ -80,8 +72,8 @@ export default {
   width: 250px;
   background: #222;
   padding: 1rem;
+  height: 97.2%;
   color: white;
-  height: 100vh;
   transition: width 0.3s ease-in-out;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -100,7 +92,7 @@ export default {
 .brand {
   font-size: 1.2rem;
   font-weight: bold;
- margin: 0 auto;
+  margin: 0 auto;
   color: #fff;
 }
 
@@ -109,6 +101,7 @@ export default {
   background: #007bff;
   border: none;
   padding: 10px;
+  width: 100%;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s ease-in-out;
@@ -125,11 +118,9 @@ export default {
 }
 
 .sidebar ul li {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  margin: 8px 0;
   border-radius: 6px;
+  margin: 8px;
+  padding: 10px;
   transition: background 0.3s ease, transform 0.2s;
   cursor: pointer;
 }
@@ -143,16 +134,13 @@ export default {
   background-color: #007bff;
 }
 
-.sidebar ul li .nav-link {
-  margin-left: 12px;
-  text-decoration: none;
+.nav-link.full-link {
+  display: flex;
+  align-items: center;
   color: white;
-  font-size: 1rem;
-  transition: color 0.3s;
-}
-
-.sidebar ul li:hover .nav-link {
-  color: #fff;
+  width: 100%;
+  text-decoration: none;
+  padding: 12px;
 }
 
 /* Icons */
@@ -161,4 +149,58 @@ export default {
   margin-right: 10px;
 }
 
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .layout-with-sidebar {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .sidebar ul {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0;
+  }
+
+  .sidebar ul li {
+    margin: 0 8px;
+    padding: 8px;
+  }
+
+  .sidebar-collapsed .sidebar {
+    width: auto;
+  }
+
+  .content {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    padding: 0.5rem;
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+  }
+
+  .sidebar ul li {
+    padding: 8px;
+  }
+
+  .toggle-btn {
+    padding: 8px;
+  }
+}
 </style>

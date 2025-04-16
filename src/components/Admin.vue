@@ -3,20 +3,10 @@
     <form @submit.prevent="validateLogin">
       <h2 class="title">Administrator</h2>
       <div class="input-group">
-        <input 
-          type="text" 
-          v-model="Adminuser" 
-          placeholder="Enter username" 
-          required 
-        />
+        <input type="text" v-model="Adminuser" placeholder="Enter username" required />
       </div>
       <div class="input-group">
-        <input 
-          type="password" 
-          v-model="password" 
-          placeholder="Enter password" 
-          required 
-        />
+        <input type="password" v-model="password" placeholder="Enter password" required />
       </div>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       <button type="submit" class="login-button">Login</button>
@@ -84,7 +74,8 @@ export default {
   justify-content: center;
   min-height: 100vh;
   background-color: #d3d3d3;
-  position: relative; /* Keeps the form in place */
+  position: relative;
+  /* Keeps the form in place */
 }
 
 form {
@@ -95,7 +86,8 @@ form {
   text-align: center;
   width: 100%;
   max-width: 400px;
-  z-index: 1; /* Form stays behind the modal */
+  z-index: 1;
+  /* Form stays behind the modal */
 }
 
 .title {
@@ -151,16 +143,20 @@ input {
 
 /* Modal Overlay Styles */
 .modal-overlay {
-  position: fixed; /* Ensures it covers the viewport */
+  position: fixed;
+  /* Ensures it covers the viewport */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  display: flex; /* Flexbox for centering */
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  display: flex;
+  /* Flexbox for centering */
   align-items: center;
   justify-content: center;
-  z-index: 2; /* Above the form */
+  z-index: 2;
+  /* Above the form */
 }
 
 /* Modal Styles */
@@ -175,12 +171,15 @@ input {
   text-align: center;
   transform: translate(-50%, -50%);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 250px; /* Smaller modal size */
+  width: 250px;
+  /* Smaller modal size */
 }
+
 /* Tick Icon Styles */
 .tick-icon {
   font-size: 3rem;
-  color: #4caf50; /* Green color for success */
+  color: #4caf50;
+  /* Green color for success */
   margin-top: 1rem;
 }
 
@@ -207,5 +206,54 @@ input {
 
 .modal-button:hover {
   background-color: #218838;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.25rem;
+    /* Slightly smaller title for tablets */
+  }
+
+  form {
+    padding: 1.5rem;
+    /* Reduce padding for smaller screens */
+  }
+
+  .login-button {
+    padding: 8px;
+    /* Smaller button padding */
+  }
+
+  .modal {
+    width: 80%;
+    /* Wider modal for smaller screens */
+    max-width: 300px;
+    /* Limit max width */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.1rem;
+    /* Smaller title for mobile */
+  }
+
+  input {
+    padding: 8px;
+    /* Smaller input padding */
+  }
+
+  .login-button {
+    padding: 8px;
+    /* Smaller button padding */
+  }
+
+  .modal {
+    width: 90%;
+    /* Even wider modal for mobile */
+    max-width: 350px;
+    /* Limit max width */
+  }
 }
 </style>
