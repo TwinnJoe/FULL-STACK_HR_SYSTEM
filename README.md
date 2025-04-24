@@ -38,6 +38,9 @@ A full-stack HR system built with Node.js, MySQL, and RESTful APIs. It supports 
 
 - Responsive frontend interface built for usability
 
+## Preview
+
+![Project Preview](https://github.com/TwinnJoe/FULL-STACK_HR_SYSTEM/blob/main/public/img/icons/Preview.png?raw=true)
 ---
 
 ## 🛠️ Tech Stack
