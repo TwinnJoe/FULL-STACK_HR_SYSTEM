@@ -1,4 +1,4 @@
-# HR Management System
+# Full Stack HR System
 
 ![Backend](https://img.shields.io/badge/backend-Node.js-blue)  
 ![Database](https://img.shields.io/badge/database-MySQL-orange)  
