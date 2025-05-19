@@ -1,222 +1,106 @@
 import { createStore } from "vuex";
 import axios from "axios";
 
+const BASE_URL = process.env.VUE_APP_API_URL;
+
+const fetchData = async (url, method = "GET", body = null) => {
+  const options = {
+    method,
+    headers: { "Content-Type": "application/json" },
+  };
+  if (body) options.body = JSON.stringify(body);
+
+  const response = await fetch(`${BASE_URL}${url}`, options);
+  if (!response.ok) throw new Error(`Failed to ${method} ${url}`);
+  return method === "GET" ? response.json() : null;
+};
+
 export default createStore({
   state: {
     employees: null,
     attendance: null,
     payroll: null,
-    token: localStorage.getItem("token") || null, // Check if token exists in localStorage
+    token: localStorage.getItem("token") || null,
     user: null,
   },
   getters: {
-    allEmployees(state) {
-      return state.employees;
-    },
-    allAttendance(state) {
-      return state.attendance;
-    },
-    allPayroll(state) {
-      return state.payroll;
-    },
+    allEmployees: (state) => state.employees,
+    allAttendance: (state) => state.attendance,
+    allPayroll: (state) => state.payroll,
   },
   mutations: {
-    setEmployees(state, employees) {
-      state.employees = employees;
-    },
-    setAttendance(state, attendance) {
-      state.attendance = attendance;
-    },
-    setPayroll(state, payroll) {
-      state.payroll = payroll;
-    },
-    setUser(state, user) {
-      state.user = user;
-    },
-    setToken(state, token) {
-      state.token = token;
-    },
+    setEmployees: (state, data) => (state.employees = data),
+    setAttendance: (state, data) => (state.attendance = data),
+    setPayroll: (state, data) => (state.payroll = data),
+    setUser: (state, user) => (state.user = user),
+    setToken: (state, token) => (state.token = token),
   },
   actions: {
-    async AllEmployees({ commit }) {
-      try {
-        const response = await fetch("http://localhost:3000/employees");
-        if (!response.ok) throw new Error("Failed to fetch employees");
-        const info = await response.json();
-        commit("setEmployees", info);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
+    async fetchEmployees({ commit }) {
+      const data = await fetchData("/employees");
+      commit("setEmployees", data);
     },
-
-    async deleteEmployee({ dispatch }, employeeID) {
-      try {
-        await fetch(`http://localhost:3000/employees/${employeeID}`, {
-          method: "DELETE",
-        });
-        dispatch("AllEmployees"); // Refresh the employee list
-      } catch (error) {
-        console.error("Error deleting employee:", error);
-      }
-    },
-
     async addEmployee({ dispatch }, payload) {
-      try {
-        await fetch("http://localhost:3000/employees", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-        dispatch("AllEmployees"); // Refresh the employee list
-      } catch (error) {
-        console.error("Error adding employee:", error);
-      }
+      await fetchData("/employees", "POST", payload);
+      dispatch("fetchEmployees");
+    },
+    async updateEmployee({ dispatch }, { employeeID, ...payload }) {
+      await fetchData(`/employees/${employeeID}`, "PATCH", payload);
+      dispatch("fetchEmployees");
+    },
+    async deleteEmployee({ dispatch }, id) {
+      await fetchData(`/employees/${id}`, "DELETE");
+      dispatch("fetchEmployees");
     },
 
-    async updateEmployee({ dispatch }, payload) {
-      try {
-        await fetch(`http://localhost:3000/employees/${payload.employeeID}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-        dispatch("AllEmployees"); // Refresh the employee list
-      } catch (error) {
-        console.error("Error updating employee:", error);
-      }
+    async fetchAttendance({ commit }) {
+      const data = await fetchData("/attendance");
+      commit("setAttendance", data);
     },
-
-    async AllAttendance({ commit }) {
-      try {
-        const response = await fetch("http://localhost:3000/attendance");
-        if (!response.ok) throw new Error("Failed to fetch attendance");
-        const info = await response.json();
-        commit("setAttendance", info);
-      } catch (error) {
-        console.error("Error fetching attendance:", error);
-      }
-    },
-
     async addAttendance({ dispatch }, payload) {
-      try {
-        await fetch("http://localhost:3000/attendance", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-        dispatch("AllAttendance"); // Refresh the attendance list
-      } catch (error) {
-        console.error("Error adding attendance:", error);
-      }
+      await fetchData("/attendance", "POST", payload);
+      dispatch("fetchAttendance");
+    },
+    async updateAttendance({ dispatch }, { employeeID, attendance_Status }) {
+      await fetchData(`/attendance/${employeeID}`, "PATCH", { attendance_Status });
+      dispatch("fetchAttendance");
     },
 
-    async updateAttendance({ commit }, payload) {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/attendance/${payload.employeeID}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              attendance_Status: payload.attendance_Status,
-            }),
-          }
-        );
-
-        if (response.ok) {
-          commit("setAttendance", payload); // Update the attendance data in the store
-        } else {
-          throw new Error("Failed to update attendance");
-        }
-      } catch (error) {
-        console.error("Error updating attendance:", error);
-      }
+    async fetchPayroll({ commit }) {
+      const data = await fetchData("/payroll");
+      commit("setPayroll", data);
     },
-
-    async AllPayroll({ commit }) {
-      try {
-        const response = await fetch("http://localhost:3000/payroll");
-        if (!response.ok) throw new Error("Failed to fetch payroll");
-        const info = await response.json();
-        commit("setPayroll", info);
-      } catch (error) {
-        console.error("Error fetching payroll:", error);
-      }
-    },
-
-    async deletePayroll({ dispatch }, payroll_ID) {
-      try {
-        await fetch(`http://localhost:3000/payroll/${payroll_ID}`, {
-          method: "DELETE",
-        });
-        dispatch("AllPayroll"); // Refresh the payroll list
-      } catch (error) {
-        console.error("Error deleting payroll:", error);
-      }
-    },
-
     async addPayroll({ dispatch }, payload) {
+      await fetchData("/payroll", "POST", payload);
+      dispatch("fetchPayroll");
+    },
+    async updatePayroll({ dispatch }, { payroll_ID, ...payload }) {
+      await fetchData(`/payroll/${payroll_ID}`, "PATCH", payload);
+      dispatch("fetchPayroll");
+    },
+    async deletePayroll({ dispatch }, id) {
+      await fetchData(`/payroll/${id}`, "DELETE");
+      dispatch("fetchPayroll");
+    },
+
+    async loginUser({ commit }, credentials) {
       try {
-        await fetch("http://localhost:3000/payroll", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-        dispatch("AllPayroll"); // Refresh the payroll list
+        const res = await axios.post(`${BASE_URL}/users`, credentials);
+        const { token, user } = res.data;
+        localStorage.setItem("token", token);
+        commit("setToken", token);
+        commit("setUser", user);
       } catch (error) {
-        console.error("Error adding payroll:", error);
+        console.error("Login failed:", error);
+        throw new Error("Invalid credentials");
       }
     },
 
-    async updatePayroll({ dispatch }, payload) {
-      try {
-        await fetch(`http://localhost:3000/payroll/${payload.payroll_ID}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-        dispatch("AllPayroll"); // Refresh the payroll list
-      } catch (error) {
-        console.error("Error updating payroll:", error);
-      }
+    logoutUser({ commit }) {
+      localStorage.removeItem("token");
+      commit("setToken", null);
+      commit("setUser", null);
     },
   },
-  async loginUser({ commit }, credentials) {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/users",
-        credentials
-      );
-      const { token, user } = response.data;
-
-      // Save the token and user data in localStorage
-      localStorage.setItem("token", token);
-      commit("setToken", token);
-      commit("setUser", user);
-    } catch (error) {
-      console.error("Error logging in", error);
-      throw new Error("Invalid credentials");
-    }
-  },
-  logoutUser({ commit }) {
-    // Clear localStorage and state
-    localStorage.removeItem("token");
-    commit("setToken", null);
-    commit("setUser", null);
-  },
-  modules: {
-    // You can add modules here if needed
-  },
+  modules: {},
 });
