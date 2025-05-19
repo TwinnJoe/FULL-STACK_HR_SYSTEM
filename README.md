@@ -1,6 +1,6 @@
 # Full Stack HR System
  
-[![Live Demo](https://img.shields.io/badge/demo-online-orange)](https://full-stack-hr-system.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/demo-online-blue)](https://full-stack-hr-system.vercel.app/)
 
 A full-stack HR system built with Node.js, MySQL, and RESTful APIs. It supports full CRUD operations and secure user authentication via the backend. The system is designed to manage employees, automate payroll, and provide an efficient admin dashboard.
 
