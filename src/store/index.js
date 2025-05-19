@@ -85,7 +85,7 @@ export default createStore({
 
     async loginUser({ commit }, credentials) {
       try {
-        const res = await axios.post(`${BASE_URL}/users`, credentials);
+        const res = await axios.post(`${BASE_URL}/api/login`, credentials);
         const { token, user } = res.data;
         localStorage.setItem("token", token);
         commit("setToken", token);
