@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import axios from "axios";
 
-const BASE_URL = process.env.VUE_APP_API_URL;
+const BASE_URL = process.env.VUE_APP_BASE_URL;
 
 const fetchData = async (url, method = "GET", body = null) => {
   const options = {
