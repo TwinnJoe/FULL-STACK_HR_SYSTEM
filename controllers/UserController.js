@@ -23,8 +23,7 @@ console.log("👤 User found:", user);
     try {
       token = jwt.sign(
         { userID: user.userID, username: user.username },
-        process.env.JWT_SECRET,
-        { expiresIn: "30d" }
+        process.env.JWT_SECRET
       );
       console.log("✅ Token created:", token);
     } catch (error) {
